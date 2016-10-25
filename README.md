@@ -1,7 +1,7 @@
 # Baseball predictor
 
 #### Hello!  This is a repo that uses tensorflow's learn API.  We will use the tensorflow learn library to predict the following...
- * Predict wether someone will hit more or less than 55 RBIs
+ * Predict wether someone will hit more or less than 65 RBIs
  * Predict if someone has more or less than 17 Stolen Bases(SB)
  * Predict a players position
 
@@ -18,7 +18,7 @@
 
 
 ### Notes about the CSV Data
-* Only included batters with 100 At Bats or more, except pitcher who need a minimum of 15 At Bats
+* Only included batters with 250 At Bats or more, except pitcher who need a minimum of 35 At Bats
 * Using 2015 and 2016 data from national league only
 * Position `1: Pitcher, 2: Catcher, 3: First Base, 4: Second Base, 5: Third Base, 6: Shortstop, 7: Outfield`
 

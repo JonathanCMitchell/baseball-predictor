@@ -12,21 +12,21 @@ for a player we need at least that column.  Also we need to use the other column
 if a player will hit more or less than 65 RBIs, here we'll use the amount of walks or BB(base on balls)
 '''
 
-COLUMNS = ["BB", "RBI"]
+COLUMNS = ["RBI", "SB"]
 
 '''
 usecols specifies which columns we want to use, 10 for the amount of walk, and 8 for the RBI since that is where they are indexed.
 '''
 
-df_train = pd.read_csv(train_file, names=COLUMNS, usecols=[8, 10], skipinitialspace=True, skiprows=1)
-df_test = pd.read_csv(test_file, names=COLUMNS, usecols=[8, 10], skipinitialspace=True, skiprows=1)
+df_train = pd.read_csv(train_file, names=COLUMNS, usecols=[8, 9], skipinitialspace=True, skiprows=1)
+df_test = pd.read_csv(test_file, names=COLUMNS, usecols=[8, 9], skipinitialspace=True, skiprows=1)
 
 
 LABEL_COLUMN = "RBI"
-df_train[LABEL_COLUMN] = (df_train["RBI"].apply(lambda x: x > 65)).astype(int)
-df_test[LABEL_COLUMN] = (df_test["RBI"].apply(lambda x: x < 65)).astype(int)
+df_train[LABEL_COLUMN] = (df_train[LABEL_COLUMN].apply(lambda x: x > 65)).astype(int)
+df_test[LABEL_COLUMN] = (df_test[LABEL_COLUMN].apply(lambda x: x > 65)).astype(int)
 
-CONTINUOUS_COLUMNS = ["BB"]
+CONTINUOUS_COLUMNS = ["SB"]
 
 import tensorflow as tf
 
@@ -44,13 +44,15 @@ def train_input_fn():
 def eval_input_fn():
   return input_fn(df_test)
 
-bb = tf.contrib.layers.real_valued_column("BB")
-age_buckets = tf.contrib.layers.bucketized_column(bb, boundaries=[0, 5, 10, 15, 25, 35, 45, 55, 70, 90, 110])
+sb = tf.contrib.layers.real_valued_column("SB")
+
+#ex. of creating a bucketized_column
+#sb_buckets = tf.contrb.layers.bucketized_column(sb, boundaries[0, 5, 10, 15])
 
 model_dir = tempfile.mkdtemp()
 
 # This is where we build our model, train it using the fit method, and then evaluate using evaluate.
-model = tf.contrib.learn.LinearClassifier(feature_columns=[age_buckets], model_dir=model_dir, n_classes = 2)
+model = tf.contrib.learn.LinearClassifier(feature_columns=[sb], model_dir=model_dir, n_classes = 2)
 
 model.fit(input_fn=train_input_fn, steps=200)
 
