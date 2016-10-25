@@ -17,3 +17,4 @@
 * Only included batters with 100 At Bats or more, except pitcher who need a minimum of 15 At Bats
 * Using 2015 and 2016 data from national league only
 * Position `1: Pitcher, 2: Catcher, 3: First Base, 4: Second Base, 5: Third Base, 6: Shortstop, 7: Outfield`
+=======
