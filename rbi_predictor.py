@@ -9,24 +9,24 @@ import pandas as pd
 '''
 Here we are specifying which columns we want to use from the CSV, since we are predicting the amount of RBIs
 for a player we need at least that column.  Also we need to use the other columns we would like to use in predicting
-if a player will hit more or less than 65 RBIs
+if a player will hit more or less than 65 RBIs, here we'll use the amount of walks or BB(base on balls)
 '''
 
-COLUMNS = ["Age", "RBI"]
+COLUMNS = ["BB", "RBI"]
 
 '''
-usecols specifies which columns we want to use, 1 for the Age, and 8 for the RBI since that is where they are indexed.
+usecols specifies which columns we want to use, 10 for the amount of walk, and 8 for the RBI since that is where they are indexed.
 '''
 
-df_train = pd.read_csv(train_file, names=COLUMNS, usecols=[1,8], skipinitialspace=True, skiprows=1)
-df_test = pd.read_csv(test_file, names=COLUMNS, usecols=[1,8], skipinitialspace=True, skiprows=1)
+df_train = pd.read_csv(train_file, names=COLUMNS, usecols=[8, 10], skipinitialspace=True, skiprows=1)
+df_test = pd.read_csv(test_file, names=COLUMNS, usecols=[8, 10], skipinitialspace=True, skiprows=1)
 
 
 LABEL_COLUMN = "RBI"
 df_train[LABEL_COLUMN] = (df_train["RBI"].apply(lambda x: x > 65)).astype(int)
 df_test[LABEL_COLUMN] = (df_test["RBI"].apply(lambda x: x < 65)).astype(int)
 
-CONTINUOUS_COLUMNS = ["Age"]
+CONTINUOUS_COLUMNS = ["BB"]
 
 import tensorflow as tf
 
@@ -44,11 +44,12 @@ def train_input_fn():
 def eval_input_fn():
   return input_fn(df_test)
 
-age = tf.contrib.layers.real_valued_column("Age")
-age_buckets = tf.contrib.layers.bucketized_column(age, boundaries=[18, 20, 22, 25, 27, 30, 32, 35, 38, 40])
+bb = tf.contrib.layers.real_valued_column("BB")
+age_buckets = tf.contrib.layers.bucketized_column(bb, boundaries=[0, 5, 10, 15, 25, 35, 45, 55, 70, 90, 110])
 
 model_dir = tempfile.mkdtemp()
 
+# This is where we build our model, train it using the fit method, and then evaluate using evaluate.
 model = tf.contrib.learn.LinearClassifier(feature_columns=[age_buckets], model_dir=model_dir, n_classes = 2)
 
 model.fit(input_fn=train_input_fn, steps=200)
