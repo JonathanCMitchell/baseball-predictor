@@ -1,5 +1,4 @@
 import tempfile
-
 train_file = 'number_as_position_2015.csv'
 test_file = 'number_as_position_2016.csv'
 
@@ -15,7 +14,7 @@ if a player will hit more or less than 65 RBIs, here we'll use the amount of sto
 COLUMNS = ["RBI", "SB"]
 
 '''
-usecols specifies which columns we want to use, 10 for the amount of walk, and 8 for the RBI since that is where they are indexed.
+usecols specifies which columns we want to use, 9 for the amount of stolen bases, and 8 for the RBIs since that is where they are indexed.
 '''
 
 df_train = pd.read_csv(train_file, names=COLUMNS, usecols=[8, 9], skipinitialspace=True, skiprows=1)
@@ -57,5 +56,5 @@ model = tf.contrib.learn.LinearClassifier(feature_columns=[sb], model_dir=model_
 model.fit(input_fn=train_input_fn, steps=200)
 
 results = model.evaluate(input_fn=eval_input_fn, steps=1)
-for key in sorted(results):
-    print ("{}: {}".format(key, results[key]))
+accuracy = sorted(results)[0]
+print ("{}: {}".format(accuracy, results[accuracy]))
