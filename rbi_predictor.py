@@ -9,7 +9,7 @@ import pandas as pd
 '''
 Here we are specifying which columns we want to use from the CSV, since we are predicting the amount of RBIs
 for a player we need at least that column.  Also we need to use the other columns we would like to use in predicting
-if a player will hit more or less than 65 RBIs, here we'll use the amount of walks or BB(base on balls)
+if a player will hit more or less than 65 RBIs, here we'll use the amount of stolen bases
 '''
 
 COLUMNS = ["RBI", "SB"]
