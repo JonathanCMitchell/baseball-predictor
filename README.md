@@ -6,7 +6,7 @@
  * Predict a players position
 
 ### Build
-* Fork the project, then clone it
+* Clone the project
 * To run this project you are going to need [python](http://docs.python-guide.org/en/latest/starting/installation/)
 * If you have python you probably already have pip, which is the package management system for python
 * Next you will need to install Tensorflow. [Tensorflow](https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html)
